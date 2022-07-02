@@ -1,1 +1,49 @@
+# This file in the root of repository, which contains the CI/CD configuration
+# Sample script
 
+variables:
+  BUILD_ENV: "XYZ"
+  RUNNING_ENV:"ABC"
+  
+  
+ stages:
+  - static_analysis
+  - test
+  - sonar-scan
+  - build-dev
+  - deploy-dev
+  - build-test
+  - deploy-test
+  - build-prod
+  - deploy-prod
+  
+ 
+ default:
+  before_script:
+    - sh app/ci_scripts/create_venv.sh
+    
+    
+ flake8:
+  tags:
+    - system_name
+  stage: static_analysis
+  variables:
+    VARIABLE: "${VARIABLE}"
+  script:
+    - flake8 --exit-zero max--line-length=120
+    
+    
+unit-tests:
+  tags:
+    - system_name
+  stage: test
+  before_script:
+    - . $VE_PATH
+  script:
+    - python -m pytest --cov=./ --cov-report xml
+  artifacts:
+    paths:
+      - coverage.xml
+    reports:
+      junit:test_results.xml
+  
