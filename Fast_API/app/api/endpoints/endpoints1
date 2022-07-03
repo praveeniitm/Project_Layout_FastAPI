@@ -1,0 +1,8 @@
+from fastapi import APIRouter
+
+router = APIRouter()
+
+@router.get('/unpublished')
+def unpublished():
+    return {'data': 'all unpublished data'}
+  
